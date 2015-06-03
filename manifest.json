@@ -1,0 +1,13 @@
+{
+	"name": "doubanFM",
+	"manifest_version": 2,
+	"version": "0.0.1",
+	"description": "doubanFM",
+	"browser_action": {
+		"default_icon": "./images/favicon_16.png",
+		"default_popup": "./popup.html"
+	},
+	"permissions": [
+	],
+	"content_security_policy": "default-src https://api.douban.com; child-src 'none'; object-src 'none'"
+}
