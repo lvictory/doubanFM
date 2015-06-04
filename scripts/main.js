@@ -1,0 +1,6 @@
+require([
+	'./app'
+], function(
+	app
+) {
+});	

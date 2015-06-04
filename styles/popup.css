@@ -1,0 +1,23 @@
+body {
+	width:510px;
+	height:245px;
+}
+
+#notify {
+	display:none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	text-align: center;
+	background-color: rgba(0,0,0,.2);
+}
+
+#log-in, #log-in:link, #log-in:hover, #log-in:active, #log-in:visited {
+	color: #ef735f;
+	text-decoration: none;
+}
+
+#log-in:active {
+	color: #ff2300;
+}

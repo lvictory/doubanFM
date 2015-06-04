@@ -8,6 +8,13 @@
 		"default_popup": "./popup.html"
 	},
 	"permissions": [
+		"cookies",
+		"http://*.douban.fm/*",
+		"http://*.douban.com/*",
+		"https://*.douban.com/*"
 	],
+	"background": {
+		"scripts": ["./scripts/background.js"]
+	},
 	"content_security_policy": "default-src https://api.douban.com; child-src 'none'; object-src 'none'"
 }

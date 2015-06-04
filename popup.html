@@ -2,10 +2,20 @@
 <html>
 <head>
 	<title></title>
-	<script src="scripts/jquery.min.js"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<script data-main="scripts/main.js" src="scripts/vendor/require.js"></script>
+	<script src="scripts/config.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/popup.css">
 </head>
 <body>
-	<p>hello world</p>
-	<script src="scripts/click.js"></script>
+	<div id="notify">
+		<p>您尚未登录豆瓣，<a id="log-in" href="http://www.douban.com/login" target="_blank">点击登录</a></p>
+	</div>
+
+	<script type="text/template" id="player-template">
+
+	</script>
+	<audio id="main-player"></audio>
+	<div class=""></div>
 </body>
 </html>
