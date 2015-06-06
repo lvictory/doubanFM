@@ -43,10 +43,10 @@ a, a:link, a:hover, a:active, a:visited {
 	display:none;
 	position: absolute;
 	left: 0;
-	top: 0;
+	bottom: 0;
 	width: 100%;
 	text-align: center;
-	background-color: rgba(0,0,0,.2);
+	background-color: rgba(0,0,0,.6);
 }
 
 #notify p {
@@ -57,7 +57,7 @@ a, a:link, a:hover, a:active, a:visited {
 	color: #ef735f;
 }
 
-#log-in:active {
+#log-in:active, #log-in:hover {
 	color: #ff2300;
 }
 
@@ -125,18 +125,26 @@ a, a:link, a:hover, a:active, a:visited {
 	height: 2px;
 }
 
-.total-length {
+.progress-bar {
+	display: block;
+	-webkit-appearance: none;
 	height: 2px;
+	width: 225px;
 	background-color: #e5e5e8;
+	overflow: hidden;
 }
 
-.played-length {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 10px;
-	height: 2px;
-	background-color: #afd9cd;
+.progress-bar:focus {
+	outline: none;
+}
+
+.progress-bar::-webkit-slider-thumb {
+	-webkit-appearance: none;
+    cursor: default;
+    height: 2px;
+    width: 2px;
+    background-color: #9dd6c5;
+    box-shadow:-250px 0 0 250px #9dd6c5;
 }
 
 .volumn {
@@ -152,7 +160,7 @@ a, a:link, a:hover, a:active, a:visited {
 }
 
 .volumn-range {
-	cursor: default;
+	cursor: pointer;
 	-webkit-appearance: none;
 	height: 2px;
 	background-color: #ccc;
@@ -160,9 +168,10 @@ a, a:link, a:hover, a:active, a:visited {
 	vertical-align: middle;
 	-webkit-transition: width 0.3s ease-in-out;
 	transition: width 0.3s ease-in-out;
+	overflow: hidden;
 }
 
-.range-show {
+.volumn:hover .volumn-range {
 	width:48px;
 }
 
@@ -178,6 +187,7 @@ a, a:link, a:hover, a:active, a:visited {
     background-color: #444;
 }
 
-.range-show::-webkit-slider-thumb {
-	width: 6px;
+.volumn:hover .volumn-range::-webkit-slider-thumb {
+	width: 2px;
+	box-shadow:-50px 0 0 50px #444;
 }

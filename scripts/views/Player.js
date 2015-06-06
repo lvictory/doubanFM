@@ -7,8 +7,6 @@ define([
 		template: _.template($("#player-template").html())
 		,events: {
 			"click .next": "playNextSong"
-			,"mouseover .volumn": "showVolumn"
-			,"mouseout .volumn": "hideVolumn"
 		}
 		,initialize: function(options) {
 			this.model = new Backbone.Model({
@@ -30,12 +28,6 @@ define([
 			chrome.extension.sendMessage({
 				name: "skip"
 			});
-		}
-		,showVolumn: function() {
-			this.$el.find(".volumn-range").addClass("range-show");
-		}
-		,hideVolumn: function() {
-			this.$el.find(".volumn-range").removeClass("range-show");
 		}	
 	});
 });
