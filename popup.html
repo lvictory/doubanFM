@@ -11,11 +11,36 @@
 	<div id="notify">
 		<p>您尚未登录豆瓣，<a id="log-in" href="http://www.douban.com/login" target="_blank">点击登录</a></p>
 	</div>
-
 	<script type="text/template" id="player-template">
-
+		<div class="player-container">
+			<div class="fl cover-wrap">
+				<img class="cover" src="http://img6.douban.com/lpic/s6972511.jpg">
+			</div>
+			<div class="player-controller">
+				<div class="song-info">
+					<h3 class="artist"><%= artist %></h3>
+					<p class="album">&lt;&nbsp;<%= album %>&nbsp;&gt;</p>
+				</div>
+				<div class="song-control">
+					<div class="title"><%= title %></div>
+					<div class="song-controller">
+						<div class="total-length"></div>
+						<div class="played-length"></div>
+						<div class="volumn fr">
+							<i class="volumn-icon">&#xf00ae;</i>
+							<input type="range" class="volumn-range">
+						</div>
+					</div>
+				</div>
+				<div class="operation-wrap fr">
+					<a href="javascript:void(0);" class="operation collect">&#xf0052;</a>
+					<a href="javascript:void(0);" class="operation blacklist">&#xf013f;</a>
+					<a href="javascript:void(0);" class="operation next">&#xf0124;&#xf0124;</a>
+					<a href="javascript:void(0);" class="operation stop">&#xe632;</a>
+				</div>
+			</div>
+		</div>
 	</script>
-	<audio id="main-player"></audio>
-	<div class=""></div>
+	
 </body>
 </html>

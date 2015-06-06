@@ -14,7 +14,7 @@
 		"https://*.douban.com/*"
 	],
 	"background": {
-		"scripts": ["./scripts/background.js"]
+		"page": "background.html"
 	},
-	"content_security_policy": "default-src https://api.douban.com; child-src 'none'; object-src 'none'"
+	"content_security_policy": "connect-src http://douban.fm; child-src 'none'; script-src 'unsafe-eval'; object-src 'none'"
 }

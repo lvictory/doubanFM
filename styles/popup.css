@@ -1,6 +1,42 @@
+@font-face {
+	font-family: 'iconfont';
+	src: url('fonts/iconfont.ttf') format('truetype');
+}
+
 body {
 	width:510px;
 	height:245px;
+	font-family: "Times New Roman, SimSun";
+	line-height: 1.65;
+	margin:4px;	
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+a, a:link, a:hover, a:active, a:visited {
+	text-decoration: none;
+}
+
+.operation {
+	font-family:"iconfont";
+	font-size: 28px;
+	color: #323232;
+	padding: 0 10px;
+}
+.operation:hover, .operation:active {
+	color:#666;
+}
+
+.fl {
+	float: left;
+}
+
+.fr {
+	float: right;
 }
 
 #notify {
@@ -13,11 +49,135 @@ body {
 	background-color: rgba(0,0,0,.2);
 }
 
+#notify p {
+	margin: 5px 0;
+}
+
 #log-in, #log-in:link, #log-in:hover, #log-in:active, #log-in:visited {
 	color: #ef735f;
-	text-decoration: none;
 }
 
 #log-in:active {
 	color: #ff2300;
+}
+
+.next {
+	letter-spacing: -14px;
+	padding-right: 10px;
+}
+
+.cover {
+	display: block;
+	width: 245px;
+	height: 245px;
+}
+
+.player-controller {
+	overflow: hidden;
+	position: relative;
+	padding-left: 20px;
+}
+
+.artist {
+	font-weight: normal;
+	font-size: 22px;
+}
+
+.album {
+	font-size: 12px;
+}
+
+.title {
+	font-size: 12px;
+	color: #009966;
+}
+
+.song-info {
+	margin-top: 30px;
+}
+
+.song-control {
+	margin: 10px 0 64px 0;
+}
+
+.stop {
+	position: absolute;
+	right:12px;
+	top:0;
+	line-height: 1;
+	padding: 6px;
+	font-size: 10px;
+	color:#fff;
+	background-color: #9dd6c5;
+}
+.stop:hover, .stop:active {
+	color:#fff;
+	background-color: #bae2d6;
+}
+
+.operation-wrap {
+	padding-right: 16px;
+}
+
+.song-controller {
+	position: relative;
+	width: 225px;
+	height: 2px;
+}
+
+.total-length {
+	height: 2px;
+	background-color: #e5e5e8;
+}
+
+.played-length {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 10px;
+	height: 2px;
+	background-color: #afd9cd;
+}
+
+.volumn {
+	letter-spacing: -5px;
+}
+
+.volumn-icon {
+	font-family: "iconfont";
+	font-size: 12px;
+	color:#666;
+	font-style: normal;
+	cursor: pointer;
+}
+
+.volumn-range {
+	cursor: default;
+	-webkit-appearance: none;
+	height: 2px;
+	background-color: #ccc;
+	width: 0;
+	vertical-align: middle;
+	-webkit-transition: width 0.3s ease-in-out;
+	transition: width 0.3s ease-in-out;
+}
+
+.range-show {
+	width:48px;
+}
+
+.volumn-range:focus {
+	outline: none;
+}
+
+.volumn-range::-webkit-slider-thumb {
+	-webkit-appearance: none;
+    cursor: pointer;
+    height: 2px;
+    width: 0;
+    background-color: #444;
+}
+
+.range-show::-webkit-slider-thumb {
+	width: 6px;
 }

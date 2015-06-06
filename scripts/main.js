@@ -3,4 +3,5 @@ require([
 ], function(
 	app
 ) {
+	app.start();
 });	
