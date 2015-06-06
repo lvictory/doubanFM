@@ -74,7 +74,7 @@ define([
 			return this.getPlayList();
 		}
 		var currentSong = playList.shift();
- 
+
 		this.audio.src = currentSong.url;
 		this.audio.play();
 		isPlaying = true;
