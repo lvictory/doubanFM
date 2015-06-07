@@ -26,9 +26,13 @@ a, a:link, a:hover, a:active, a:visited {
 	font-size: 28px;
 	color: #323232;
 	padding: 0 10px;
+	cursor: pointer;
 }
-.operation:hover, .operation:active {
+.operation:hover {
 	color:#666;
+}
+.operation:active {
+	color:#888;
 }
 
 .fl {
@@ -47,6 +51,7 @@ a, a:link, a:hover, a:active, a:visited {
 	width: 100%;
 	text-align: center;
 	background-color: rgba(0,0,0,.6);
+	z-index: 233;
 }
 
 #notify p {
@@ -61,15 +66,55 @@ a, a:link, a:hover, a:active, a:visited {
 	color: #ff2300;
 }
 
+.player-container {
+	position: relative;
+}
+
 .next {
 	letter-spacing: -14px;
 	padding-right: 10px;
+}
+
+.cover-wrap {
+	position: relative;
 }
 
 .cover {
 	display: block;
 	width: 245px;
 	height: 245px;
+}
+
+.cover-album {
+	position: absolute;
+	left: 0;
+	top: 0;
+	background-color: rgba(0,0,0,0);
+	display: block;
+	width: 245px;
+	height: 245px;
+	-webkit-transition: background-color 0.2s ease-in-out;
+	transition: background-color 0.2s ease-in-out;
+}
+.cover-album .cover-tip {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -56px;
+	margin-top: -13px;
+	background-color: rgb(0,0,0);
+	opacity: 0;
+	color:#fff;
+	padding: 4px 20px;
+	-webkit-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+	font-family: "Microsoft Yahei";
+}
+.cover-album:hover {
+	background-color: rgba(0,0,0,.1);
+}
+.cover-album:hover .cover-tip {
+	opacity: 0.5;
 }
 
 .player-controller {
@@ -81,6 +126,10 @@ a, a:link, a:hover, a:active, a:visited {
 .artist {
 	font-weight: normal;
 	font-size: 22px;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+	margin-right:20px;
+	overflow: hidden;
 }
 
 .album {
@@ -91,6 +140,9 @@ a, a:link, a:hover, a:active, a:visited {
 	font-size: 12px;
 	color: #009966;
 }
+.title:hover, .title:active {
+	color: #33ad85;
+}
 
 .song-info {
 	margin-top: 30px;
@@ -100,7 +152,7 @@ a, a:link, a:hover, a:active, a:visited {
 	margin: 10px 0 64px 0;
 }
 
-.stop {
+.pause {
 	position: absolute;
 	right:12px;
 	top:0;
@@ -110,9 +162,24 @@ a, a:link, a:hover, a:active, a:visited {
 	color:#fff;
 	background-color: #9dd6c5;
 }
-.stop:hover, .stop:active {
+.pause:hover, .pause:active {
 	color:#fff;
 	background-color: #bae2d6;
+}
+
+.pause-mask {
+	position: absolute;
+	background-color: rgba(255,255,255,.6);
+	width: 265px;
+	height: 226px;
+	left:245px;
+	top:0;
+	cursor: pointer;
+	display: none;
+}
+
+.mask-show {
+	display: block;
 }
 
 .operation-wrap {

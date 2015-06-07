@@ -30,6 +30,8 @@ require(['backend/radio'], function(Radio) {
 
 	var radio;
 
+	var hasPreviousRadio = false;
+
 	chrome.extension.onConnect.addListener(function(port) {
 		if(port.name !== "doubanFM") {
 			return null;
@@ -43,11 +45,16 @@ require(['backend/radio'], function(Radio) {
 
 		checkLogIn();
 
+		radio = Radio.init("#main-audio", {
+			port: port
+			,hasPreviousRadio: hasPreviousRadio
+		});
+
+		hasPreviousRadio = true;
+
 		port.postMessage({
 			type: "init"
 		});
-
-		radio = Radio.init("#main-audio");
 	});
 
 	chrome.extension.onMessage.addListener(function(msg) {
@@ -55,6 +62,19 @@ require(['backend/radio'], function(Radio) {
 			case "skip":
 				radio.skip();
 				break;
+
+			case "pause":
+				radio.pause();
+				break;
+
+			case "continue":
+				radio.play();
+				break;
+
+			case "requestCurrentSong":
+				radio.getCurrentSong();
+				break;
+
 			default:
 				break;
 		}

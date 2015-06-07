@@ -14,15 +14,18 @@
 	<script type="text/template" id="player-template">
 		<div class="player-container">
 			<div class="fl cover-wrap">
-				<img class="cover" src="http://img6.douban.com/lpic/s6972511.jpg">
+				<img class="cover" src="<%= picture %>">
+				<a class="cover-album" href="http://music.douban.com<%= album %>" target="_blank">
+					<span class="cover-tip">查看专辑信息</span>
+				</a>
 			</div>
 			<div class="player-controller">
 				<div class="song-info">
-					<h3 class="artist"><%= artist %></h3>
-					<p class="album">&lt;&nbsp;<%= album %>&nbsp;&gt;</p>
+					<h3 class="artist" title="<%= artist %>"><%= artist %></h3>
+					<p class="album">&lt;&nbsp;<%= albumtitle %>&nbsp;&gt;</p>
 				</div>
 				<div class="song-control">
-					<div class="title"><%= title %></div>
+					<div><a class="title" href="http://music.douban.com<%= album %>" target="_blank"><%= title %></a></div>
 					<div class="song-controller">
 						<div class="progress">
 							<input type="range" class="progress-bar" disabled>
@@ -34,12 +37,13 @@
 					</div>
 				</div>
 				<div class="operation-wrap fr">
-					<a href="javascript:void(0);" class="operation collect">&#xf0052;</a>
-					<a href="javascript:void(0);" class="operation blacklist">&#xf013f;</a>
-					<a href="javascript:void(0);" class="operation next">&#xf0124;&#xf0124;</a>
-					<a href="javascript:void(0);" class="operation stop">&#xe632;</a>
+					<span class="operation collect">&#xf0052;</span>
+					<span class="operation blacklist">&#xf013f;</span>
+					<span class="operation next">&#xf0124;&#xf0124;</span>
+					<span class="operation pause">&#xe632;</span>
 				</div>
 			</div>
+			<div class="pause-mask <%= isPaused ? 'mask-show' : '' %>"></div>
 		</div>
 	</script>
 	

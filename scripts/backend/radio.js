@@ -3,27 +3,39 @@ define([
 ],function(
 	Backbone
 ) {
-	var isPlaying = false;
-
 	var playList = [];
+
+	var currentSong = {};
 
 	var Radio = function() {
 
 	};
 
-	Radio.init = function(id) {
+	Radio.init = function(id, options) {
 		var radio = new Radio();
+
 		_.extend(radio, Backbone.Events);
+		radio.port = options.port;
+		radio.port.onDisconnect.addListener(function() {
+			radio.port = null;
+		});
 		radio.audio = document.getElementById(id.replace("#",""));
 
-		!isPlaying && radio.getPlayList();
+		if(!options.hasPreviousRadio) {
+			radio.getPlayList();
+		}
 
 		radio.on("getListReady", radio.playSingleSong);
-		radio.on("songChanged", function(currentSong) {
-			radio.trigger("changeSingleSong", currentSong)
+		radio.on("songChanged", function(song) {
+			radio.port && radio.port.postMessage({
+				type: "currentSongData"
+				,song: song
+			});
 		});
 		radio.audio.addEventListener("ended", function() {
-			isPlaying = false;
+			radio.updateCurrentSong({
+				isPaused: true
+			});
 			radio.playSingleSong();
 		});
 		return radio;
@@ -73,17 +85,44 @@ define([
 		if (playList.length === 0) {
 			return this.getPlayList();
 		}
-		var currentSong = playList.shift();
+		currentSong = playList.shift();
 
 		this.audio.src = currentSong.url;
+		
+		this.play();
+	};
+
+	Radio.prototype.play = function() {
 		this.audio.play();
-		isPlaying = true;
+		this.updateCurrentSong({
+			isPaused: false
+		});
 		this.trigger("songChanged", currentSong);
 	};
 
 	Radio.prototype.skip = function() {
 		this.audio.pause();
 		this.playSingleSong();
+	};
+
+	Radio.prototype.pause = function() {
+		this.audio.pause();
+		this.updateCurrentSong({
+			isPaused: true
+		});
+	};
+
+	Radio.prototype.updateCurrentSong = function(options) {
+		_.extend(currentSong, options);
+	};
+
+	Radio.prototype.getCurrentSong = function() {
+		if(!_.isEmpty(currentSong)) {
+			this.port.postMessage({
+				type: "currentSongData"
+				,song: currentSong
+			});
+		}
 	};
 
 	return Radio;
