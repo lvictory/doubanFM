@@ -45,12 +45,16 @@ require(['backend/radio'], function(Radio) {
 
 		checkLogIn();
 
-		radio = Radio.init("#main-audio", {
-			port: port
-			,hasPreviousRadio: hasPreviousRadio
-		});
+		if(hasPreviousRadio) {
+			radio.updatePort(port);
+		} else {
+			radio = Radio.init("#main-audio", {
+				port: port
+				,hasPreviousRadio: hasPreviousRadio
+			});
 
-		hasPreviousRadio = true;
+			hasPreviousRadio = true;
+		}
 
 		port.postMessage({
 			type: "init"

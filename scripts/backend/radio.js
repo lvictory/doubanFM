@@ -15,10 +15,8 @@ define([
 		var radio = new Radio();
 
 		_.extend(radio, Backbone.Events);
-		radio.port = options.port;
-		radio.port.onDisconnect.addListener(function() {
-			radio.port = null;
-		});
+		radio.updatePort(options.port);
+		
 		radio.audio = document.getElementById(id.replace("#",""));
 		radio.audio.volume = currentSong.volumn/100 || 1;
 
@@ -84,7 +82,8 @@ define([
 
 	Radio.prototype.playSingleSong = function() {
 		if (playList.length === 0) {
-			return this.getPlayList();
+			this.getPlayList();
+			return null;
 		}
 		currentSong = playList.shift();
 
@@ -130,6 +129,19 @@ define([
 		this.audio.volume = value/100;
 		this.updateCurrentSong({
 			volumn: value
+		});
+	};
+
+	Radio.prototype.close = function() {
+		this.port = null;
+		this.audio = null;
+	};
+
+	Radio.prototype.updatePort = function(port) {
+		var self = this;
+		this.port = port;
+		this.port.onDisconnect.addListener(function() {
+			self.port = null;
 		});
 	};
 
