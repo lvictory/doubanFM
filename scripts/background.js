@@ -75,6 +75,10 @@ require(['backend/radio'], function(Radio) {
 				radio.getCurrentSong();
 				break;
 
+			case "volumn":
+				radio.setVolumn(msg.value);
+				break;
+
 			default:
 				break;
 		}

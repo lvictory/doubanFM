@@ -20,6 +20,7 @@ define([
 			radio.port = null;
 		});
 		radio.audio = document.getElementById(id.replace("#",""));
+		radio.audio.volume = currentSong.volumn/100 || 1;
 
 		if(!options.hasPreviousRadio) {
 			radio.getPlayList();
@@ -123,6 +124,13 @@ define([
 				,song: currentSong
 			});
 		}
+	};
+
+	Radio.prototype.setVolumn = function(value) {
+		this.audio.volume = value/100;
+		this.updateCurrentSong({
+			volumn: value
+		});
 	};
 
 	return Radio;

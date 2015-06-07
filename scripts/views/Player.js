@@ -9,6 +9,7 @@ define([
 			"click .next": "playNextSong"
 			,"click .pause": "pause"
 			,"click .pause-mask": "play"
+			,"change .volumn-range": "changeVolumn"
 		}
 		,initialize: function(options) {
 			var self = this;
@@ -20,6 +21,7 @@ define([
 				,title: ""
 				,picture: ""
 				,album: ""
+				,volumn: 100
 			});
 
 			this.listenTo(this.model, "change", this.render);
@@ -62,6 +64,13 @@ define([
 				name: "continue"
 			});
 			this.$el.find(".pause-mask").hide();
+		}
+		,changeVolumn: function() {
+			var volumn = this.$el.find(".volumn-range").val();
+			chrome.extension.sendMessage({
+				name: "volumn"
+				,value: volumn
+			});
 		}
 	});
 });
