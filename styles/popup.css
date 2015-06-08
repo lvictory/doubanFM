@@ -35,6 +35,10 @@ a, a:link, a:hover, a:active, a:visited {
 	color:#888;
 }
 
+.like, .like:hover {
+	color: #ff413d;
+}
+
 .fl {
 	float: left;
 }
@@ -216,6 +220,7 @@ a, a:link, a:hover, a:active, a:visited {
 
 .volumn {
 	letter-spacing: -5px;
+	cursor: default;
 }
 
 .volumn-icon {

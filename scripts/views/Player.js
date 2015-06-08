@@ -10,6 +10,8 @@ define([
 			,"click .pause": "pause"
 			,"click .pause-mask": "play"
 			,"change .volumn-range": "changeVolumn"
+			,"click .collect": "like"
+			,"click .blacklist": "blacklist"
 		}
 		,initialize: function(options) {
 			var self = this;
@@ -22,6 +24,7 @@ define([
 				,picture: ""
 				,album: ""
 				,volumn: 100
+				,currentLength: 0
 			});
 
 			this.listenTo(this.model, "change", this.render);
@@ -31,10 +34,19 @@ define([
 			});
 			
 			this.port.onMessage.addListener(function(msg) {
-				if(msg.type === "currentSongData") {
-					self.model.set(msg.song);
+				switch(msg.type) {
+					case "currentSongData":
+						self.model.set(msg.song);
+						break;
+
+					case "time":
+						self.updatePlayTime(msg.time);
+						break;
+
+					default:
+						break;
 				}
-			});			
+			});		
 		}
 		,render: function() {
 			if(this.model.get("title") === "") {
@@ -44,9 +56,6 @@ define([
 			var html = this.template(this.model.toJSON());
 			this.$el.html(html);
 			this.$el.appendTo($("body"));
-		}
-		,onSongChanged: function(data) {
-			this.songList = data.song;
 		}
 		,playNextSong: function() {
 			chrome.extension.sendMessage({
@@ -71,6 +80,26 @@ define([
 				name: "volumn"
 				,value: volumn
 			});
+		}
+		,like: function() {
+			this.model.set("like", +!this.model.get("like"));
+			chrome.extension.sendMessage({
+				name: "toggleLike"
+			});
+		}
+		,blacklist: function() {
+			chrome.extension.sendMessage({
+				name: "blacklist"
+			});
+		}
+		,updatePlayTime: function(time) {
+			var currentLength = time.currentTime/time.duration*100;
+			this.model.set({
+				"currentLength": currentLength
+			}, {
+				silent: true
+			});
+			this.$el.find(".progress-bar").val(currentLength);
 		}
 	});
 });

@@ -28,7 +28,7 @@
 					<div><a class="title" href="http://music.douban.com<%= album %>" target="_blank"><%= title %></a></div>
 					<div class="song-controller">
 						<div class="progress">
-							<input type="range" class="progress-bar" disabled>
+							<input type="range" class="progress-bar" disabled value="<%= currentLength ? currentLength : 0 %>">
 						</div>
 						<div class="volumn fr">
 							<i class="volumn-icon">&#xf00ae;</i>
@@ -37,7 +37,7 @@
 					</div>
 				</div>
 				<div class="operation-wrap fr">
-					<span class="operation collect">&#xf0052;</span>
+					<span <%= like===1 ? 'class="operation collect like"' : 'class="operation collect"' %>>&#xf0052;</span>
 					<span class="operation blacklist">&#xf013f;</span>
 					<span class="operation next">&#xf0124;&#xf0124;</span>
 					<span class="operation pause">&#xe632;</span>

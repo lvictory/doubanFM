@@ -7,6 +7,8 @@ define([
 
 	var currentSong = {};
 
+	var channel = {};
+
 	var Radio = function() {
 
 	};
@@ -37,113 +39,134 @@ define([
 			});
 			radio.playSingleSong();
 		});
+		radio.audio.addEventListener("timeupdate", function() {
+			radio.updateCurrentSong({
+				duration: radio.audio.duration
+				,currentTime: radio.audio.currentTime
+			});
+
+			radio.port && radio.port.postMessage({
+				type: "time"
+				,time: {
+					duration: radio.audio.duration
+					,currentTime: radio.audio.currentTime
+				}
+			});
+		});
+		radio.audio.addEventListener("loadstart", function() {
+			radio.port && radio.port.postMessage({
+				type: "time"
+				,time: {
+					duration: 1
+					,currentTime: 0
+				}
+			});
+		});
 		return radio;
 	};
 
-	Radio.prototype.uuid = function() {
-	    var s = [];
-	    var hexDigits = "0123456789abcdef";
-	    for (var i = 0; i < 10; i++) {
-	        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
-	    }
-	 
-	    var uuid = s.join("");
-	    return uuid;
-	};
-
-	Radio.prototype.getPlayList = function() {
-		var self = this;
-
-		$.ajax({
-			url: "http://douban.fm/j/mine/playlist"
-			,type: "GET"
-			,dataType: "json"
-			,data: {
-				type:"n"
-				//歌曲ID
-				,sid:''
-				//当前播放时间
-				,pt:this.audio.currentTime
-				//频道ID
-				,channel:0
-				,pb:128
-				,from:"mainsite"
-				//随机数
-				,r:this.uuid()
-			}
-			,success: function(resp) {
-				playList = resp.song;
-				self.trigger("getListReady");
-			}
-			,error: function(resp) {
-			}
-		});
-	};
-
-	Radio.prototype.playSingleSong = function() {
-		if (playList.length === 0) {
-			this.getPlayList();
-			return null;
+	_.extend(Radio.prototype, {
+		uuid: function() {
+		    var s = [];
+		    var hexDigits = "0123456789abcdef";
+		    for (var i = 0; i < 10; i++) {
+		        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+		    }
+		 
+		    var uuid = s.join("");
+		    return uuid;
 		}
-		currentSong = playList.shift();
 
-		this.audio.src = currentSong.url;
-		
-		this.play();
-	};
+		,getPlayList: function() {
+			var self = this;
 
-	Radio.prototype.play = function() {
-		this.audio.play();
-		this.updateCurrentSong({
-			isPaused: false
-		});
-		this.trigger("songChanged", currentSong);
-	};
-
-	Radio.prototype.skip = function() {
-		this.audio.pause();
-		this.playSingleSong();
-	};
-
-	Radio.prototype.pause = function() {
-		this.audio.pause();
-		this.updateCurrentSong({
-			isPaused: true
-		});
-	};
-
-	Radio.prototype.updateCurrentSong = function(options) {
-		_.extend(currentSong, options);
-	};
-
-	Radio.prototype.getCurrentSong = function() {
-		if(!_.isEmpty(currentSong)) {
-			this.port.postMessage({
-				type: "currentSongData"
-				,song: currentSong
+			$.ajax({
+				url: "http://douban.fm/j/mine/playlist"
+				,type: "GET"
+				,dataType: "json"
+				,data: {
+					type: _.isEmpty(currentSong) ? "n" : "s"
+					//歌曲ID
+					,sid: currentSong.sid || ""
+					//当前播放时间
+					,pt:this.audio.currentTime
+					//频道ID
+					,channel: channel.channelId || 0
+					,pb:128
+					,from:"mainsite"
+					//随机数
+					,r:this.uuid()
+				}
+				,success: function(resp) {
+					playList = resp.song;
+					self.trigger("getListReady");
+				}
+				,error: function(resp) {
+				}
 			});
 		}
-	};
 
-	Radio.prototype.setVolumn = function(value) {
-		this.audio.volume = value/100;
-		this.updateCurrentSong({
-			volumn: value
-		});
-	};
+		,playSingleSong: function() {
+			if (playList.length === 0) {
+				this.getPlayList();
+				return null;
+			}
+			currentSong = playList.shift();
 
-	Radio.prototype.close = function() {
-		this.port = null;
-		this.audio = null;
-	};
+			this.audio.src = currentSong.url;
+			
+			this.play();
+		}
 
-	Radio.prototype.updatePort = function(port) {
-		var self = this;
-		this.port = port;
-		this.port.onDisconnect.addListener(function() {
-			self.port = null;
-		});
-	};
+		,play: function() {
+			this.audio.play();
+			this.updateCurrentSong({
+				isPaused: false
+			});
+			this.trigger("songChanged", currentSong);
+		}
+
+		,skip: function() {
+			this.audio.pause();
+			this.playSingleSong();
+		}
+
+		,pause: function() {
+			this.audio.pause();
+			this.updateCurrentSong({
+				isPaused: true
+			});
+		}
+
+		,updateCurrentSong: function(options) {
+			_.extend(currentSong, options);
+		}
+
+		,getCurrentSong: function() {
+			if(!_.isEmpty(currentSong)) {
+				this.port.postMessage({
+					type: "currentSongData"
+					,song: currentSong
+				});
+			}
+		}
+
+		,setVolumn: function(value) {
+			this.audio.volume = value/100;
+			this.updateCurrentSong({
+				volumn: value
+			});
+		}
+
+		,updatePort: function(port) {
+			var self = this;
+			this.port = port;
+			this.port.onDisconnect.addListener(function() {
+				self.port = null;
+			});
+		}
+	});
+	
 
 	return Radio;
 })

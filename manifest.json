@@ -16,5 +16,5 @@
 	"background": {
 		"page": "background.html"
 	},
-	"content_security_policy": "connect-src http://douban.fm; child-src 'none'; script-src 'unsafe-eval'; object-src 'none'"
+	"content_security_policy": "connect-src http://douban.fm; child-src 'none'; script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com; object-src 'none'"
 }

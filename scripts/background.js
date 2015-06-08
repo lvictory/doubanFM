@@ -20,11 +20,13 @@ require(['backend/radio'], function(Radio) {
 			url: "http://douban.com"
 			,name: "ck"
 		},function(cookie) {
-			chrome.cookies.set({
-				url: "http://douban.fm"
-				,name: "ck"
-				,"value": cookie.value
-			});
+			if(cookie) {
+				chrome.cookies.set({
+					url: "http://douban.fm"
+					,name: "ck"
+					,"value": cookie.value
+				});
+			}
 		});
 	};
 
@@ -81,6 +83,13 @@ require(['backend/radio'], function(Radio) {
 
 			case "volumn":
 				radio.setVolumn(msg.value);
+				break;
+
+			case "toggleLike":
+				break;
+
+			case "blacklist":
+				radio.skip();
 				break;
 
 			default:
