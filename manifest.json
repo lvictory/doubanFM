@@ -3,6 +3,10 @@
 	"manifest_version": 2,
 	"version": "0.0.1",
 	"description": "doubanFM",
+	"icons": {
+		"16": "./images/favicon_16.png",
+		"48": "./images/favicon_48.png"
+	},
 	"browser_action": {
 		"default_icon": "./images/favicon_16.png",
 		"default_popup": "./popup.html"

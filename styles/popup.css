@@ -166,7 +166,7 @@ a, a:link, a:hover, a:active, a:visited {
 
 .pause {
 	position: absolute;
-	right:12px;
+	right:0;
 	top:0;
 	line-height: 1;
 	padding: 6px;
