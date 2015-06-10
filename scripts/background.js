@@ -50,8 +50,9 @@ require(['backend/radio'], function(Radio) {
 		if(hasPreviousRadio) {
 			radio.updatePort(port);
 		} else {
-			radio = Radio.init("#main-audio", {
-				port: port
+			radio = new Radio({
+				id: "#main-audio"
+				,port: port
 				,hasPreviousRadio: hasPreviousRadio
 			});
 

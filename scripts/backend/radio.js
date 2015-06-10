@@ -10,63 +10,59 @@ define([
 	var channel = {};
 
 	var Radio = function() {
-
+		this.initialize.apply(this, arguments);
 	};
 
-	Radio.init = function(id, options) {
-		var radio = new Radio();
-
-		_.extend(radio, Backbone.Events);
-		radio.updatePort(options.port);
+	_.extend(Radio.prototype, Backbone.Events, {
+		initialize: function(options) {
+			this.updatePort(options.port);
 		
-		radio.audio = document.getElementById(id.replace("#",""));
-		radio.audio.volume = currentSong.volumn/100 || 1;
+			this.audio = document.getElementById(options.id.replace("#",""));
+			this.audio.volume = currentSong.volumn/100 || 1;
 
-		if(!options.hasPreviousRadio) {
-			radio.getPlayList();
+			if(!options.hasPreviousRadio) {
+				this.getPlayList();
+			}
+
+			this.on("getListReady", this.playSingleSong);
+			this.on("songChanged", function(song) {
+				this.port && this.port.postMessage({
+					type: "currentSongData"
+					,song: song
+				});
+			});
+			this.audio.addEventListener("ended", _.bind(function() {
+				this.updateCurrentSong({
+					isPaused: true
+				});
+				this.playSingleSong();
+			}, this));
+			this.audio.addEventListener("timeupdate", _.bind(function() {
+				this.updateCurrentSong({
+					duration: this.audio.duration
+					,currentTime: this.audio.currentTime
+				});
+
+				this.port && this.port.postMessage({
+					type: "time"
+					,time: {
+						duration: this.audio.duration
+						,currentTime: this.audio.currentTime
+					}
+				});
+			}, this));
+			this.audio.addEventListener("loadstart", _.bind(function() {
+				this.port && this.port.postMessage({
+					type: "time"
+					,time: {
+						duration: 1
+						,currentTime: 0
+					}
+				});
+			}, this));
 		}
 
-		radio.on("getListReady", radio.playSingleSong);
-		radio.on("songChanged", function(song) {
-			radio.port && radio.port.postMessage({
-				type: "currentSongData"
-				,song: song
-			});
-		});
-		radio.audio.addEventListener("ended", function() {
-			radio.updateCurrentSong({
-				isPaused: true
-			});
-			radio.playSingleSong();
-		});
-		radio.audio.addEventListener("timeupdate", function() {
-			radio.updateCurrentSong({
-				duration: radio.audio.duration
-				,currentTime: radio.audio.currentTime
-			});
-
-			radio.port && radio.port.postMessage({
-				type: "time"
-				,time: {
-					duration: radio.audio.duration
-					,currentTime: radio.audio.currentTime
-				}
-			});
-		});
-		radio.audio.addEventListener("loadstart", function() {
-			radio.port && radio.port.postMessage({
-				type: "time"
-				,time: {
-					duration: 1
-					,currentTime: 0
-				}
-			});
-		});
-		return radio;
-	};
-
-	_.extend(Radio.prototype, {
-		uuid: function() {
+		,uuid: function() {
 		    var s = [];
 		    var hexDigits = "0123456789abcdef";
 		    for (var i = 0; i < 10; i++) {
@@ -91,7 +87,7 @@ define([
 					//当前播放时间
 					,pt:this.audio.currentTime
 					//频道ID
-					,channel: channel.channelId || 0
+					,channel: channel.channelId || -3
 					,pb:128
 					,from:"mainsite"
 					//随机数
