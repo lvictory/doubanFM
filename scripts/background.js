@@ -53,7 +53,6 @@ require(['backend/radio'], function(Radio) {
 			radio = new Radio({
 				id: "#main-audio"
 				,port: port
-				,hasPreviousRadio: hasPreviousRadio
 			});
 
 			hasPreviousRadio = true;

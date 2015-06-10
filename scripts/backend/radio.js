@@ -3,13 +3,10 @@ define([
 ],function(
 	Backbone
 ) {
-	var playList = [];
-
-	var currentSong = {};
-
-	var channel = {};
-
 	var Radio = function() {
+		this.playList = [];
+		this.currentSong = {};
+		this.channel = {};
 		this.initialize.apply(this, arguments);
 	};
 
@@ -18,11 +15,9 @@ define([
 			this.updatePort(options.port);
 		
 			this.audio = document.getElementById(options.id.replace("#",""));
-			this.audio.volume = currentSong.volumn/100 || 1;
-
-			if(!options.hasPreviousRadio) {
-				this.getPlayList();
-			}
+			this.audio.volume = this.currentSong.volumn/100 || 1;
+			
+			this.getPlayList();
 
 			this.on("getListReady", this.playSingleSong);
 			this.on("songChanged", function(song) {
@@ -31,6 +26,7 @@ define([
 					,song: song
 				});
 			});
+			
 			this.audio.addEventListener("ended", _.bind(function() {
 				this.updateCurrentSong({
 					isPaused: true
@@ -81,20 +77,20 @@ define([
 				,type: "GET"
 				,dataType: "json"
 				,data: {
-					type: _.isEmpty(currentSong) ? "n" : "s"
+					type: _.isEmpty(this.currentSong) ? "n" : "s"
 					//歌曲ID
-					,sid: currentSong.sid || ""
+					,sid: this.currentSong.sid || ""
 					//当前播放时间
 					,pt:this.audio.currentTime
 					//频道ID
-					,channel: channel.channelId || -3
+					,channel: this.channel.channelId || -3
 					,pb:128
 					,from:"mainsite"
 					//随机数
 					,r:this.uuid()
 				}
 				,success: function(resp) {
-					playList = resp.song;
+					self.playList = resp.song;
 					self.trigger("getListReady");
 				}
 				,error: function(resp) {
@@ -103,13 +99,13 @@ define([
 		}
 
 		,playSingleSong: function() {
-			if (playList.length === 0) {
+			if (this.playList.length === 0) {
 				this.getPlayList();
 				return null;
 			}
-			currentSong = playList.shift();
+			this.currentSong = this.playList.shift();
 
-			this.audio.src = currentSong.url;
+			this.audio.src = this.currentSong.url;
 			
 			this.play();
 		}
@@ -119,7 +115,7 @@ define([
 			this.updateCurrentSong({
 				isPaused: false
 			});
-			this.trigger("songChanged", currentSong);
+			this.trigger("songChanged", this.currentSong);
 		}
 
 		,skip: function() {
@@ -135,14 +131,14 @@ define([
 		}
 
 		,updateCurrentSong: function(options) {
-			_.extend(currentSong, options);
+			_.extend(this.currentSong, options);
 		}
 
 		,getCurrentSong: function() {
-			if(!_.isEmpty(currentSong)) {
+			if(!_.isEmpty(this.currentSong)) {
 				this.port.postMessage({
 					type: "currentSongData"
-					,song: currentSong
+					,song: this.currentSong
 				});
 			}
 		}
