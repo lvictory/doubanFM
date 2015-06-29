@@ -15,6 +15,7 @@ require(['backend/radio'], function(Radio) {
 					type: "logIn"
 				});
 			}
+			
 		});
 		chrome.cookies.get({
 			url: "http://douban.com"
