@@ -14,7 +14,6 @@ require(['backend/radio'], function(Radio) {
 				port && port.postMessage({
 					type: "logIn"
 				});
-				
 			}
 		});
 		chrome.cookies.get({
